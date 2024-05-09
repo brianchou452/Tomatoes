@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Tomatoes</string>
+    <string name="tab_todo">待辦</string>
+    <string name="tab_history">歷程</string>
+    <string name="tab_achievement">成就</string>
 </resources>
