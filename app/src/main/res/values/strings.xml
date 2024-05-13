@@ -3,4 +3,7 @@
     <string name="tab_todo">待辦</string>
     <string name="tab_history">歷程</string>
     <string name="tab_achievement">成就</string>
+    <string name="new_todo_button">新增</string>
+    <string name="generic_error">哭哭，應用程式出錯了！</string>
+    <string name="try_again_btn">重試</string>
 </resources>

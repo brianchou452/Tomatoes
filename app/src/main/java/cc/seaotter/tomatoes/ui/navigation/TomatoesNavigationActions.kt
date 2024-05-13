@@ -10,6 +10,8 @@ import androidx.navigation.NavHostController
 import cc.seaotter.tomatoes.R
 
 object TomatoesRoute {
+    const val SPLASH = "SplashScreen"
+    const val LOGIN = "LoginScreen"
     const val TODO = "Todo"
     const val HISTORY = "History"
     const val ACHIEVEMENT = "Achievement"
@@ -36,6 +38,28 @@ class TomatoesNavigationActions(private val navController: NavHostController) {
             launchSingleTop = true
             // Restore state when re-selecting a previously selected item
             restoreState = true
+        }
+    }
+
+    fun popUp() {
+        navController.popBackStack()
+    }
+
+    fun navigate(route: String) {
+        navController.navigate(route) { launchSingleTop = true }
+    }
+
+    fun navigateAndPopUp(route: String, popUp: String) {
+        navController.navigate(route) {
+            launchSingleTop = true
+            popUpTo(popUp) { inclusive = true }
+        }
+    }
+
+    fun clearAndNavigate(route: String) {
+        navController.navigate(route) {
+            launchSingleTop = true
+            popUpTo(0) { inclusive = true }
         }
     }
 }
