@@ -1,6 +1,9 @@
 package cc.seaotter.tomatoes.ui
 
+import android.Manifest
 import android.content.res.Resources
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,11 +29,17 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import cc.seaotter.tomatoes.TomatoesAppState
+import cc.seaotter.tomatoes.ui.common.permission.PermissionDialog
+import cc.seaotter.tomatoes.ui.common.permission.RationaleDialog
 import cc.seaotter.tomatoes.ui.common.snackbar.SnackbarManager
 import cc.seaotter.tomatoes.ui.navigation.TomatoesBottomNavigationBar
 import cc.seaotter.tomatoes.ui.navigation.TomatoesNavHost
 import cc.seaotter.tomatoes.ui.navigation.TomatoesNavigationActions
 import cc.seaotter.tomatoes.ui.navigation.TomatoesRoute
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
 import kotlinx.coroutines.CoroutineScope
 
 
@@ -47,6 +56,10 @@ fun TomatoesApp() {
     val appState = rememberAppState(
         navigationActions = navigationActions
     )
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        RequestNotificationPermissionDialog()
+    }
 
     Scaffold(
         snackbarHost = {
@@ -96,6 +109,19 @@ fun TomatoesAppContent(
                 )
             }
         }
+    }
+}
+
+@OptIn(ExperimentalPermissionsApi::class)
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+@Composable
+fun RequestNotificationPermissionDialog() {
+    val permissionState =
+        rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
+
+    if (!permissionState.status.isGranted) {
+        if (permissionState.status.shouldShowRationale) RationaleDialog()
+        else PermissionDialog { permissionState.launchPermissionRequest() }
     }
 }
 

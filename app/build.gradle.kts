@@ -15,8 +15,8 @@ android {
         applicationId = "cc.seaotter.tomatoes"
         minSdk = 26
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "0.1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -68,11 +68,13 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.auth)
-    implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.firestore)
     implementation(libs.hilt.android)
+    implementation(libs.firebase.messaging)
+    implementation(libs.accompanist.permissions)
     ksp(libs.hilt.android.compiler)
     implementation(libs.firebase.crashlytics)
-    implementation(libs.firebase.perf.ktx)
+    implementation(libs.firebase.perf)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

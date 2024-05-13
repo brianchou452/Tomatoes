@@ -6,4 +6,10 @@
     <string name="new_todo_button">新增</string>
     <string name="generic_error">哭哭，應用程式出錯了！</string>
     <string name="try_again_btn">重試</string>
+    <string name="default_notification_channel_id">預設通知頻道</string>
+    <string name="request_notification_permission">知道了</string>
+    <string name="notification_permission_description">需要通知權限才能向您發送通知，請在接下來的彈出視窗中按下允許。</string>
+    <string name="notification_permission_title">哭哭 沒有通知權限</string>
+    <string name="ok">OK</string>
+    <string name="notification_permission_settings">如果你願意的話，請在 設定->通知 中打開。</string>
 </resources>
