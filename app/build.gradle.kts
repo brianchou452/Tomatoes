@@ -72,6 +72,7 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.firebase.messaging)
     implementation(libs.accompanist.permissions)
+    implementation(libs.androidx.lifecycle.runtime.compose)
     ksp(libs.hilt.android.compiler)
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.perf)

@@ -16,10 +16,14 @@ object FirebaseModule {
     @Provides
     fun auth(): FirebaseAuth {
         val auth = Firebase.auth
-//        auth.useEmulator("192.168.1.109", 4000)
+//        auth.useEmulator("192.168.1.185", 9099)
         return auth
     }
 
     @Provides
-    fun firestore(): FirebaseFirestore = Firebase.firestore
+    fun firestore(): FirebaseFirestore {
+        val firestore = Firebase.firestore
+        firestore.useEmulator("192.168.1.185", 8080)
+        return firestore
+    }
 }

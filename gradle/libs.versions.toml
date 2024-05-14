@@ -24,6 +24,7 @@ googleServices = "4.4.1"
 firebaseCrashlyticsPlugin = "2.9.9"
 firebaseMessagingKtx = "24.0.0"
 accompanistPermissions = "0.35.0-alpha"
+lifecycleRuntimeCompose = "2.7.0"
 # https://github.com/firebase/firebase-android-sdk/issues/5925 3.0.0 is not working
 
 [libraries]
@@ -54,6 +55,7 @@ hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-comp
 androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessagingKtx" }
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanistPermissions" }
+androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleRuntimeCompose" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
