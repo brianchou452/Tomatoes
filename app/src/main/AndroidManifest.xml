@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
 
     <application
         android:allowBackup="true"
@@ -15,6 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Tomatoes"
         tools:targetApi="31">
+        <receiver android:name=".services.alarm.AlarmReceiver" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -28,7 +31,7 @@
         </activity>
 
         <service
-            android:name=".services.TomatoesMessagingService"
+            android:name=".services.notification.TomatoesMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

@@ -14,7 +14,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-//    configurationService: ConfigurationService,
     private val accountService: AccountService,
     logService: LogService
 ) : TomatoesViewModel(logService) {

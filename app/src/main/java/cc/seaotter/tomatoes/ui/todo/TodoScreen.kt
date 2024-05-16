@@ -55,7 +55,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun TodoScreen(
-    viewModel: TodoViewModel = hiltViewModel()
+    navigateToCountDown: (String) -> Unit, viewModel: TodoViewModel = hiltViewModel()
 ) {
 
     val todos = viewModel.todos.collectAsStateWithLifecycle(emptyList())
@@ -80,8 +80,7 @@ fun TodoScreen(
                 },
                 icon = { Icon(Icons.Filled.Edit, "Extended floating action button.") },
                 text = { Text(text = stringResource(id = R.string.new_todo_button)) },
-                modifier = Modifier
-                    .padding(
+                modifier = Modifier.padding(
                         end = WindowInsets.safeDrawing.asPaddingValues()
                             .calculateEndPadding(LocalLayoutDirection.current)
                     ),
@@ -93,6 +92,7 @@ fun TodoScreen(
         TodoBody(
             todos = todos.value,
             onTodoChange = viewModel::onTodoChange,
+            navigateToCountDown = navigateToCountDown,
             modifier = Modifier.fillMaxSize(),
             contentPadding = innerPadding,
         )
@@ -107,8 +107,7 @@ fun TodoScreen(
                 modifier = Modifier.imePadding()
             ) {
                 AddTodoForm(
-                    hideSheet = ::hideSheet,
-                    viewModel = viewModel
+                    hideSheet = ::hideSheet, viewModel = viewModel
                 )
             }
         }
@@ -119,6 +118,7 @@ fun TodoScreen(
 private fun TodoBody(
     todos: List<Todo>,
     onTodoChange: (Todo) -> Unit,
+    navigateToCountDown: (String) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
@@ -132,6 +132,7 @@ private fun TodoBody(
             items(todos, key = { it.id }) { todoItem ->
                 TodoItem(
                     todo = todoItem,
+                    navigateToCountDown = navigateToCountDown,
                     onCheckChange = {
                         val todo = todoItem.copy(completed = !todoItem.completed)
                         onTodoChange(todoItem.copy(completed = todo.completed))
@@ -163,8 +164,7 @@ fun ListEmpty(
 
 @Composable
 fun AddTodoForm(
-    hideSheet: () -> Unit,
-    viewModel: TodoViewModel
+    hideSheet: () -> Unit, viewModel: TodoViewModel
 ) {
     val todo = remember { mutableStateOf(Todo()) }
 
@@ -173,12 +173,10 @@ fun AddTodoForm(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.Top)
     ) {
-        OutlinedTextField(
-            singleLine = true,
+        OutlinedTextField(singleLine = true,
             value = todo.value.title,
             onValueChange = { todo.value = todo.value.copy(title = it) },
-            placeholder = { Text("title") }
-        )
+            placeholder = { Text("title") })
 
         Row {
             Spacer(modifier = Modifier.weight(1f))
@@ -199,20 +197,17 @@ fun AddTodoForm(
         // TODO: 新增類別選擇 Chips
 
         Row(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Button(
                 onClick = {
                     hideSheet()
-                },
-                colors = ButtonDefaults.buttonColors(
+                }, colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.secondaryContainer,
                     contentColor = MaterialTheme.colorScheme.onSecondaryContainer
-                ),
-                modifier = Modifier
+                ), modifier = Modifier
                     .weight(1f)
                     .padding(horizontal = 8.dp)
             ) {
@@ -222,8 +217,7 @@ fun AddTodoForm(
                 onClick = {
                     viewModel.addTodo(todo.value)
                     hideSheet()
-                },
-                modifier = Modifier
+                }, modifier = Modifier
                     .weight(1f)
                     .padding(horizontal = 8.dp)
             ) {
@@ -239,5 +233,5 @@ fun AddTodoForm(
 @Composable
 @Preview
 fun TodoScreenPreview() {
-    TodoScreen()
+    TodoScreen(navigateToCountDown = {})
 }

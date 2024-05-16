@@ -13,17 +13,18 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 object FirebaseModule {
+
+//    init {
+//        Firebase.firestore.useEmulator("192.168.1.109", 8080)
+//    }
+
     @Provides
     fun auth(): FirebaseAuth {
-        val auth = Firebase.auth
-//        auth.useEmulator("192.168.1.185", 9099)
-        return auth
+        return Firebase.auth
     }
 
     @Provides
     fun firestore(): FirebaseFirestore {
-        val firestore = Firebase.firestore
-        firestore.useEmulator("192.168.1.185", 8080)
-        return firestore
+        return Firebase.firestore
     }
 }

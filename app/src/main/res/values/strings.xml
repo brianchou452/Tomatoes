@@ -12,4 +12,16 @@
     <string name="notification_permission_title">哭哭 沒有通知權限</string>
     <string name="ok">OK</string>
     <string name="notification_permission_settings">如果你願意的話，請在 設定->通知 中打開。</string>
+    <string name="alarm_notification_channel_name">番茄鐘</string>
+    <string name="label_short_break">短休息</string>
+    <string name="label_long_break">長休息</string>
+    <string name="label_tomato_finished">完成囉</string>
+    <string name="label_break_finished">休息結束</string>
+    <string name="btn_start_timer">開始計時</string>
+    <string name="btn_cancel">取消</string>
+    <string name="btn_begin_short_break">開始短休息</string>
+    <string name="btn_begin_long_break">開始長休息</string>
+    <string name="btn_end_short_break">結束短休息</string>
+    <string name="btn_end_long_break">結束長休息</string>
+    <string name="btn_continue_fighting">繼續努力</string>
 </resources>

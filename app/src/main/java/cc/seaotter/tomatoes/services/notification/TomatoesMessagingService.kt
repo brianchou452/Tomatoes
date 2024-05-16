@@ -1,4 +1,4 @@
-package cc.seaotter.tomatoes.services
+package cc.seaotter.tomatoes.services.notification
 
 import android.app.NotificationChannel
 import android.app.NotificationManager

@@ -20,8 +20,10 @@ import cc.seaotter.tomatoes.data.Todo
 fun TodoItem(
     todo: Todo,
     onCheckChange: () -> Unit,
+    navigateToCountDown: (String) -> Unit
 ) {
     Card(
+        onClick = { navigateToCountDown(todo.id) },
         modifier = Modifier
             .padding(8.dp, 0.dp, 8.dp, 8.dp)
             .background(MaterialTheme.colorScheme.background),

@@ -10,6 +10,7 @@ data class Todo(
     @ServerTimestamp val createdAt: Date = Date(),
     var title: String = "",
     val numOfTomatoes: Int = 0,
+    val completedTomatoes: Int = 0,
     val durationPerTomato: Long = 0,
     val completed: Boolean = false,
     val userId: String = ""

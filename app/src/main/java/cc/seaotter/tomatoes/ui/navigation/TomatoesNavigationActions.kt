@@ -13,6 +13,8 @@ object TomatoesRoute {
     const val SPLASH = "SplashScreen"
     const val LOGIN = "LoginScreen"
     const val TODO = "Todo"
+    const val COUNTDOWN = "CountDown"
+    const val TODO_ID = "todoId"
     const val HISTORY = "History"
     const val ACHIEVEMENT = "Achievement"
 }

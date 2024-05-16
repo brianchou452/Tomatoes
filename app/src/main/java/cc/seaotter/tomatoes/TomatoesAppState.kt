@@ -38,5 +38,14 @@ class TomatoesAppState(
         navActions.navigateAndPopUp(route, popUp)
     }
 
+    fun navigateToCountDown(route: String) {
+        isShowBottomNavigationBar.value = false
+        navActions.navigate(route)
+    }
+
+    fun popUpCountDown() {
+        navActions.popUp()
+        isShowBottomNavigationBar.value = true
+    }
 
 }

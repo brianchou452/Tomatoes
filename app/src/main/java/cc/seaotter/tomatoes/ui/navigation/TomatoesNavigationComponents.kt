@@ -9,11 +9,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import cc.seaotter.tomatoes.TomatoesAppState
 import cc.seaotter.tomatoes.ui.achievement.AchievementScreen
+import cc.seaotter.tomatoes.ui.countdown.CountDownScreen
 import cc.seaotter.tomatoes.ui.history.HistoryScreen
+import cc.seaotter.tomatoes.ui.navigation.TomatoesRoute.TODO_ID
 import cc.seaotter.tomatoes.ui.splash.SplashScreen
 import cc.seaotter.tomatoes.ui.todo.TodoScreen
 
@@ -60,12 +64,24 @@ fun NavGraphBuilder.tomatoesGraph(appState: TomatoesAppState) {
         SplashScreen(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
     }
     composable(TomatoesRoute.TODO) {
-        TodoScreen()
+        TodoScreen(
+            navigateToCountDown = { todoID ->
+                appState.navigateToCountDown("${TomatoesRoute.COUNTDOWN}/$todoID")
+            }
+        )
     }
     composable(TomatoesRoute.HISTORY) {
         HistoryScreen()
     }
     composable(TomatoesRoute.ACHIEVEMENT) {
         AchievementScreen()
+    }
+    composable(
+        route = "${TomatoesRoute.COUNTDOWN}/{$TODO_ID}",
+        arguments = listOf(navArgument(TODO_ID) { type = NavType.StringType })
+    ) {
+        CountDownScreen(
+            popUpCountDown = { appState.popUpCountDown() }
+        )
     }
 }
