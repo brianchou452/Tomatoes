@@ -34,6 +34,8 @@ android {
         }
     }
     compileOptions {
+        // Enable support for the new language APIs
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
@@ -73,6 +75,10 @@ dependencies {
     implementation(libs.firebase.messaging)
     implementation(libs.accompanist.permissions)
     implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.foundation)
+    implementation(project(":kalendar"))
+    implementation(libs.kotlinx.datetime)
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
     ksp(libs.hilt.android.compiler)
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.perf)

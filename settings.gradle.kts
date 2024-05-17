@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Tomatoes"
 include(":app")
+include(":kalendar")
