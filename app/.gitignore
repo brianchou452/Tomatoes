@@ -1,2 +1,4 @@
 /build
 google-services.json
+/debug/app-debug.aab
+/release/app-release.aab
