@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.imeAnimationSource
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -64,7 +65,9 @@ fun TodoScreen(
 ) {
 
     val todos = viewModel.todos.collectAsStateWithLifecycle(emptyList())
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
     val scope = rememberCoroutineScope()
     var showBottomSheet by remember { mutableStateOf(false) }
 
@@ -81,7 +84,9 @@ fun TodoScreen(
             ExtendedFloatingActionButton(
                 onClick = {
                     showBottomSheet = true
-                    scope.launch { sheetState.expand() }
+                    scope.launch {
+                        sheetState.expand()
+                    }
                 },
                 icon = { Icon(Icons.Filled.Edit, "Extended floating action button.") },
                 text = { Text(text = stringResource(id = R.string.new_todo_button)) },
@@ -178,31 +183,34 @@ fun AddTodoForm(
     Column(
         modifier = Modifier.padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.Top)
+        verticalArrangement = Arrangement.spacedBy(32.dp, Alignment.Top)
     ) {
         OutlinedTextField(
             singleLine = true,
             value = todo.value.title,
             onValueChange = { todo.value = todo.value.copy(title = it) },
-            placeholder = { Text("title") },
+            placeholder = { Text(stringResource(R.string.tf_todo_title)) },
             modifier = Modifier.focusRequester(focusRequester),
         )
 
-        Row {
-            Spacer(modifier = Modifier.weight(1f))
-            Text(text = todo.value.numOfTomatoes.toString() + " tomatoes")
+        Column {
+            Row {
+                Text(text = stringResource(R.string.label_how_many_number_of_tomato))
+                Spacer(modifier = Modifier.weight(1f))
+                Text(text = todo.value.numOfTomatoes.toString() + stringResource(R.string.label_tomato_with_unit))
+            }
+            Slider(
+                value = todo.value.numOfTomatoes.toFloat(),
+                onValueChange = { todo.value = todo.value.copy(numOfTomatoes = it.toInt()) },
+                colors = SliderDefaults.colors(
+                    thumbColor = MaterialTheme.colorScheme.secondary,
+                    activeTrackColor = MaterialTheme.colorScheme.secondary,
+                    inactiveTrackColor = MaterialTheme.colorScheme.secondaryContainer,
+                ),
+                steps = 8,
+                valueRange = 1f..10f
+            )
         }
-        Slider(
-            value = todo.value.numOfTomatoes.toFloat(),
-            onValueChange = { todo.value = todo.value.copy(numOfTomatoes = it.toInt()) },
-            colors = SliderDefaults.colors(
-                thumbColor = MaterialTheme.colorScheme.secondary,
-                activeTrackColor = MaterialTheme.colorScheme.secondary,
-                inactiveTrackColor = MaterialTheme.colorScheme.secondaryContainer,
-            ),
-            steps = 8,
-            valueRange = 1f..10f
-        )
 
         // TODO: 新增類別選擇 Chips
 
@@ -235,7 +243,7 @@ fun AddTodoForm(
             }
         }
         Spacer(
-            modifier = Modifier.padding(24.dp)
+            modifier = Modifier.systemBarsPadding()
         )
 
         LaunchedEffect(Unit) {

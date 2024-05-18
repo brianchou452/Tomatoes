@@ -26,4 +26,7 @@
     <string name="btn_continue_fighting">繼續努力</string>
     <string name="label_no_items">還沒有待辦事項，點擊“新增”來撰寫</string>
     <string name="btn_add_todo">新增</string>
+    <string name="tf_todo_title">要完成的事項</string>
+    <string name="label_tomato_with_unit">" 個番茄"</string>
+    <string name="label_how_many_number_of_tomato">預估需要的番茄數</string>
 </resources>

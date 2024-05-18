@@ -190,7 +190,10 @@ class CountDownViewModel @Inject constructor(
         duration: Long, type: AlarmType
     ) {
         alarm = Alarm(
-            uiState.value.todo.id, uiState.value.todo.title, duration, type
+            todoId = uiState.value.todo.id,
+            title = uiState.value.todo.title,
+            type = type,
+            duration = duration
         )
         _timer.value = duration
     }
@@ -217,8 +220,8 @@ class CountDownViewModel @Inject constructor(
 
     companion object {
         private const val TOMATO_CYCLE = 4
-        private const val SHORT_BREAK_DURATION = 5 * 1000L
-        private const val LONG_BREAK_DURATION = 7 * 1000L
+        private const val SHORT_BREAK_DURATION = 5 * 60 * 1000L
+        private const val LONG_BREAK_DURATION = 20 * 60 * 1000L
     }
 }
 

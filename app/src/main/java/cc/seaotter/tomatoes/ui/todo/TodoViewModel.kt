@@ -16,8 +16,9 @@ class TodoViewModel @Inject constructor(
 
 
     fun addTodo(todo: Todo) {
+        val newTodo = todo.copy(durationPerTomato = TOMATO_DURATION)
         launchCatching {
-            databaseService.save(todo)
+            databaseService.save(newTodo)
         }
     }
 
@@ -25,6 +26,10 @@ class TodoViewModel @Inject constructor(
         launchCatching {
             databaseService.update(todo)
         }
+    }
+
+    companion object {
+        private const val TOMATO_DURATION = 25 * 60 * 1000L
     }
 
 }

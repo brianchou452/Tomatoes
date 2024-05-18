@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 open class TomatoesViewModel(private val logService: LogService) : ViewModel() {
     fun launchCatching(snackbar: Boolean = true, block: suspend CoroutineScope.() -> Unit) =
         viewModelScope.launch(
-            CoroutineExceptionHandler { context, throwable ->
+            CoroutineExceptionHandler { _, throwable ->
                 if (snackbar) {
                     SnackbarManager.showMessage(throwable.toSnackbarMessage())
                 }
