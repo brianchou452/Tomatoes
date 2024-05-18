@@ -24,4 +24,6 @@
     <string name="btn_end_short_break">結束短休息</string>
     <string name="btn_end_long_break">結束長休息</string>
     <string name="btn_continue_fighting">繼續努力</string>
+    <string name="label_no_items">還沒有待辦事項，點擊“新增”來撰寫</string>
+    <string name="btn_add_todo">新增</string>
 </resources>

@@ -33,6 +33,7 @@ import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,7 +41,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -49,6 +53,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cc.seaotter.tomatoes.R
 import cc.seaotter.tomatoes.data.Todo
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -81,9 +86,9 @@ fun TodoScreen(
                 icon = { Icon(Icons.Filled.Edit, "Extended floating action button.") },
                 text = { Text(text = stringResource(id = R.string.new_todo_button)) },
                 modifier = Modifier.padding(
-                        end = WindowInsets.safeDrawing.asPaddingValues()
-                            .calculateEndPadding(LocalLayoutDirection.current)
-                    ),
+                    end = WindowInsets.safeDrawing.asPaddingValues()
+                        .calculateEndPadding(LocalLayoutDirection.current)
+                ),
                 containerColor = MaterialTheme.colorScheme.tertiaryContainer,
                 contentColor = MaterialTheme.colorScheme.onTertiaryContainer
             )
@@ -153,9 +158,9 @@ fun ListEmpty(
     ) {
         Spacer(modifier = Modifier.weight(1f))
         Text(
-            text = "No items",
+            text = stringResource(id = R.string.label_no_items),
             textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.titleLarge,
+            style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(8.dp),
         )
         Spacer(modifier = Modifier.weight(1f))
@@ -167,16 +172,21 @@ fun AddTodoForm(
     hideSheet: () -> Unit, viewModel: TodoViewModel
 ) {
     val todo = remember { mutableStateOf(Todo()) }
+    val focusRequester = remember { FocusRequester() }
+    val keyboard = LocalSoftwareKeyboardController.current
 
     Column(
         modifier = Modifier.padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.Top)
     ) {
-        OutlinedTextField(singleLine = true,
+        OutlinedTextField(
+            singleLine = true,
             value = todo.value.title,
             onValueChange = { todo.value = todo.value.copy(title = it) },
-            placeholder = { Text("title") })
+            placeholder = { Text("title") },
+            modifier = Modifier.focusRequester(focusRequester),
+        )
 
         Row {
             Spacer(modifier = Modifier.weight(1f))
@@ -211,7 +221,7 @@ fun AddTodoForm(
                     .weight(1f)
                     .padding(horizontal = 8.dp)
             ) {
-                Text("Cancel")
+                Text(stringResource(R.string.btn_cancel))
             }
             Button(
                 onClick = {
@@ -221,12 +231,18 @@ fun AddTodoForm(
                     .weight(1f)
                     .padding(horizontal = 8.dp)
             ) {
-                Text("Done")
+                Text(stringResource(R.string.btn_add_todo))
             }
         }
         Spacer(
             modifier = Modifier.padding(24.dp)
         )
+
+        LaunchedEffect(Unit) {
+            focusRequester.requestFocus()
+            delay(100)
+            keyboard?.show()
+        }
     }
 }
 

@@ -5,10 +5,14 @@ import android.content.res.Resources
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
@@ -21,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -70,14 +75,30 @@ fun TomatoesApp() {
                     Snackbar(snackbarData, contentColor = MaterialTheme.colorScheme.onPrimary)
                 }
             )
+        },
+        bottomBar = {
+            if (appState.isShowBottomNavigationBar.value) {
+                TomatoesBottomNavigationBar(
+                    selectedDestination = selectedDestination,
+                    navigateToTopLevelDestination = appState.navActions::navigateTo
+                )
+            }
         }
     ) { innerPaddingModifier ->
-        TomatoesAppContent(
-            modifier = Modifier.padding(innerPaddingModifier),
-            navController = navController,
-            selectedDestination = selectedDestination,
-            appState = appState
-        )
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPaddingModifier)
+                .consumeWindowInsets(innerPaddingModifier)
+                .systemBarsPadding()
+                .safeDrawingPadding(),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            TomatoesAppContent(
+                navController = navController,
+                appState = appState
+            )
+        }
     }
 
 
@@ -87,7 +108,6 @@ fun TomatoesApp() {
 fun TomatoesAppContent(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    selectedDestination: String,
     appState: TomatoesAppState
 ) {
     Row(modifier = modifier.fillMaxSize()) {
@@ -102,12 +122,6 @@ fun TomatoesAppContent(
                 modifier = Modifier.weight(1f),
                 appState = appState
             )
-            if (appState.isShowBottomNavigationBar.value) {
-                TomatoesBottomNavigationBar(
-                    selectedDestination = selectedDestination,
-                    navigateToTopLevelDestination = appState.navActions::navigateTo
-                )
-            }
         }
     }
 }
