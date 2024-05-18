@@ -1,5 +1,6 @@
 package cc.seaotter.tomatoes.ui
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cc.seaotter.tomatoes.data.service.LogService
@@ -13,11 +14,12 @@ import kotlinx.coroutines.launch
 open class TomatoesViewModel(private val logService: LogService) : ViewModel() {
     fun launchCatching(snackbar: Boolean = true, block: suspend CoroutineScope.() -> Unit) =
         viewModelScope.launch(
-            CoroutineExceptionHandler { _, throwable ->
+            CoroutineExceptionHandler { context, throwable ->
                 if (snackbar) {
                     SnackbarManager.showMessage(throwable.toSnackbarMessage())
                 }
                 logService.logNonFatalCrash(throwable)
+                Log.e("TomatoesViewModel", throwable.message ?: "Unknown error", throwable)
             },
             block = block
         )

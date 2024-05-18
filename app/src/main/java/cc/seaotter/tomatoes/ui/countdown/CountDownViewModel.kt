@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import cc.seaotter.tomatoes.data.Alarm
 import cc.seaotter.tomatoes.data.AlarmType
 import cc.seaotter.tomatoes.data.Todo
+import cc.seaotter.tomatoes.data.TodoHistory
 import cc.seaotter.tomatoes.data.service.DatabaseService
 import cc.seaotter.tomatoes.data.service.LogService
 import cc.seaotter.tomatoes.services.alarm.AlarmScheduler
@@ -130,7 +131,17 @@ class CountDownViewModel @Inject constructor(
 
     private fun onTimerCancel() {
         when (uiState.value.screenState) {
-            CountDownScreenState.IN_TOMATO, CountDownScreenState.IN_SHORT_BREAK, CountDownScreenState.IN_LONG_BREAK -> {
+            CountDownScreenState.IN_TOMATO -> {
+                setNewAlarm(uiState.value.todo.durationPerTomato, AlarmType.TOMATO)
+                uiState.value = uiState.value.copy(
+                    screenState = CountDownScreenState.BEGIN_TOMATO
+                )
+                saveTodoHistory(
+                    duration = uiState.value.todo.durationPerTomato - _timer.value
+                )
+            }
+
+            CountDownScreenState.IN_SHORT_BREAK, CountDownScreenState.IN_LONG_BREAK -> {
                 setNewAlarm(uiState.value.todo.durationPerTomato, AlarmType.TOMATO)
                 uiState.value = uiState.value.copy(
                     screenState = CountDownScreenState.BEGIN_TOMATO
@@ -146,9 +157,10 @@ class CountDownViewModel @Inject constructor(
     private fun onFinishedTomato() {
         numberOfTomatoesFinished++
         updateRemainingTomatoes()
+        saveTodoHistory()
         if (uiState.value.todo.completedTomatoes == uiState.value.todo.numOfTomatoes) {
             SnackbarManager.showMessage(SnackbarMessage.StringSnackbar("所有番茄完成了！"))
-            // TODO: 提示使用者事情完成了沒，要不要繼續。
+            // TODO: 提示使用者已經達成設定的目標，要不要繼續。
         }
         if (numberOfTomatoesFinished % TOMATO_CYCLE == 0) {
             uiState.value = uiState.value.copy(
@@ -181,6 +193,20 @@ class CountDownViewModel @Inject constructor(
             uiState.value.todo.id, uiState.value.todo.title, duration, type
         )
         _timer.value = duration
+    }
+
+    private fun saveTodoHistory(
+        duration: Long = uiState.value.todo.durationPerTomato
+    ) {
+        launchCatching {
+            databaseService.save(
+                TodoHistory(
+                    title = uiState.value.todo.title,
+                    todoId = uiState.value.todo.id,
+                    duration = duration,
+                )
+            )
+        }
     }
 
     override fun onCleared() {

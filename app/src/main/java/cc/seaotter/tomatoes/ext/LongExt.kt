@@ -12,3 +12,10 @@ fun Long.formatTime(): String {
     val remainingSeconds = totalSeconds % 60
     return String.format(Locale.getDefault(), "%02d:%02d", minutes, remainingSeconds)
 }
+
+fun Long.formatTimeWithText(): String {
+    if (this < 0) {
+        return "0 分"
+    }
+    return String.format(Locale.getDefault(), "%d 分", this / 1000 / 60)
+}

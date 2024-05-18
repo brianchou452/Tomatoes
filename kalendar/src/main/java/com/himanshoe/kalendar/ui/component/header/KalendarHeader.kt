@@ -162,13 +162,13 @@ private fun getTitleText(month: Month, year: Int): String {
     val monthDisplayName = month.getDisplayName(TextStyle.FULL, Locale.getDefault())
         .lowercase()
         .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
-    val shortYear = year.toString().takeLast(2)
-    return "$monthDisplayName '$shortYear"
+    val shortYear = year.toString()
+    return "$shortYear $monthDisplayName"
 }
 
 @MultiplePreviews
 @Composable
-fun KalendarHeaderPreview() {
+private fun KalendarHeaderPreview() {
     KalendarHeader(
         month = java.time.Month.APRIL,
         year = 2023,
