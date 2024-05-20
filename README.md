@@ -14,6 +14,7 @@
 
 - 自行編譯
 - 點[這裡](https://appdistribution.firebase.dev/i/76e036597d7c17d1)加入測試人員群組，自動下載最新版本
+- 點[這裡](https://github.com/brianchou452/Tomatoes/releases)下載APK
 
 ## 功能
 
