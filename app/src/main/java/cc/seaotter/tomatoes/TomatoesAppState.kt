@@ -7,7 +7,6 @@ import androidx.compose.runtime.Stable
 import cc.seaotter.tomatoes.ui.common.snackbar.SnackbarManager
 import cc.seaotter.tomatoes.ui.common.snackbar.SnackbarMessage.Companion.toMessage
 import cc.seaotter.tomatoes.ui.navigation.TomatoesNavigationActions
-import cc.seaotter.tomatoes.ui.navigation.TomatoesRoute
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
@@ -29,28 +28,6 @@ class TomatoesAppState(
                 snackbarManager.clearSnackbarState()
             }
         }
-    }
-
-    fun navigateAndPopUp(route: String, popUp: String) {
-        if (route == TomatoesRoute.TODO) {
-            isShowBottomNavigationBar.value = true
-        }
-        navActions.navigateAndPopUp(route, popUp)
-    }
-
-    fun navigateToCountDown(route: String) {
-        isShowBottomNavigationBar.value = false
-        navActions.navigate(route)
-    }
-
-    fun popUpCountDown() {
-        navActions.popUp()
-        isShowBottomNavigationBar.value = true
-    }
-
-    fun clearAndNavigate(route: String) {
-        navActions.clearAndNavigate(route)
-        isShowBottomNavigationBar.value = false
     }
 
 }

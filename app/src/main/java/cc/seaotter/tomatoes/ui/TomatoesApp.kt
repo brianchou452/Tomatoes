@@ -4,6 +4,9 @@ import android.Manifest
 import android.content.res.Resources
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,6 +28,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -66,6 +70,20 @@ fun TomatoesApp() {
         RequestNotificationPermissionDialog()
     }
 
+    when (selectedDestination) {
+        TomatoesRoute.TODO,
+        TomatoesRoute.HISTORY,
+        TomatoesRoute.ACHIEVEMENT -> {
+            appState.isShowBottomNavigationBar.value = true
+        }
+
+        TomatoesRoute.LOGIN,
+        TomatoesRoute.SPLASH,
+        "${TomatoesRoute.COUNTDOWN}/{${TomatoesRoute.TODO_ID}}" -> {
+            appState.isShowBottomNavigationBar.value = false
+        }
+    }
+
     Scaffold(
         snackbarHost = {
             SnackbarHost(
@@ -77,12 +95,17 @@ fun TomatoesApp() {
             )
         },
         bottomBar = {
-            if (appState.isShowBottomNavigationBar.value) {
-                TomatoesBottomNavigationBar(
-                    selectedDestination = selectedDestination,
-                    navigateToTopLevelDestination = appState.navActions::navigateTo
-                )
-            }
+            AnimatedVisibility(
+                visible = appState.isShowBottomNavigationBar.value,
+                enter = slideInVertically(initialOffsetY = { it }),
+                exit = slideOutVertically(targetOffsetY = { it }),
+                content = {
+                    TomatoesBottomNavigationBar(
+                        selectedDestination = selectedDestination,
+                        navigateToTopLevelDestination = appState.navActions::navigateTo
+                    )
+                }
+            )
         }
     ) { innerPaddingModifier ->
         Box(
@@ -143,12 +166,18 @@ fun RequestNotificationPermissionDialog() {
 fun rememberAppState(
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     navigationActions: TomatoesNavigationActions,
-    isShowBottomNavigationBar: MutableState<Boolean> = remember { mutableStateOf(false) },
+    isShowBottomNavigationBar: MutableState<Boolean> = rememberSaveable { mutableStateOf(false) },
     snackbarManager: SnackbarManager = SnackbarManager,
     resources: Resources = resources(),
     coroutineScope: CoroutineScope = rememberCoroutineScope()
 ) =
-    remember(snackbarHostState, navigationActions, snackbarManager, resources, coroutineScope) {
+    remember(
+        snackbarHostState,
+        navigationActions,
+        snackbarManager,
+        resources,
+        coroutineScope
+    ) {
         TomatoesAppState(
             snackbarHostState,
             navigationActions,

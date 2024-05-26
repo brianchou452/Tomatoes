@@ -58,21 +58,21 @@ fun TomatoesNavHost(
         navController = navController,
         startDestination = TomatoesRoute.SPLASH,
     ) {
-        tomatoesGraph(appState)
+        tomatoesGraph(appState.navActions)
     }
 }
 
-fun NavGraphBuilder.tomatoesGraph(appState: TomatoesAppState) {
+fun NavGraphBuilder.tomatoesGraph(navAction: TomatoesNavigationActions) {
     composable(TomatoesRoute.SPLASH) {
-        SplashScreen(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
+        SplashScreen(openAndPopUp = { route, popUp -> navAction.navigateAndPopUp(route, popUp) })
     }
     composable(TomatoesRoute.LOGIN) {
-        LoginScreen(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
+        LoginScreen(openAndPopUp = { route, popUp -> navAction.navigateAndPopUp(route, popUp) })
     }
     composable(TomatoesRoute.TODO) {
         TodoScreen(
             navigateToCountDown = { todoID ->
-                appState.navigateToCountDown("${TomatoesRoute.COUNTDOWN}/$todoID")
+                navAction.navigate("${TomatoesRoute.COUNTDOWN}/$todoID")
             }
         )
     }
@@ -81,7 +81,7 @@ fun NavGraphBuilder.tomatoesGraph(appState: TomatoesAppState) {
     }
     composable(TomatoesRoute.ACHIEVEMENT) {
         AchievementScreen(
-            clearAndNavigate = { route -> appState.clearAndNavigate(route) }
+            clearAndNavigate = { route -> navAction.clearAndNavigate(route) }
         )
     }
     composable(
@@ -89,7 +89,7 @@ fun NavGraphBuilder.tomatoesGraph(appState: TomatoesAppState) {
         arguments = listOf(navArgument(TODO_ID) { type = NavType.StringType })
     ) {
         CountDownScreen(
-            popUpCountDown = { appState.popUpCountDown() }
+            popUpCountDown = { navAction.popUp() }
         )
     }
 }
