@@ -7,7 +7,6 @@ import cc.seaotter.tomatoes.data.service.AccountService
 import cc.seaotter.tomatoes.data.service.LogService
 import cc.seaotter.tomatoes.ui.TomatoesViewModel
 import cc.seaotter.tomatoes.ui.navigation.TomatoesRoute
-import com.google.firebase.auth.FirebaseAuthException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -26,19 +25,9 @@ class SplashViewModel @Inject constructor(
         if (accountService.hasUser) {
             Log.d("SplashViewModel", "hasUser: ")
             openAndPopUp(TomatoesRoute.TODO, TomatoesRoute.SPLASH)
-        } else createAnonymousAccount(openAndPopUp)
-    }
-
-    private fun createAnonymousAccount(openAndPopUp: (String, String) -> Unit) {
-        launchCatching(snackbar = false) {
-            try {
-                accountService.createAnonymousAccount()
-            } catch (ex: FirebaseAuthException) {
-                showError.value = true
-                throw ex
-            }
-            Log.d("SplashViewModel", "createAnonymousAccount: ")
-            openAndPopUp(TomatoesRoute.TODO, TomatoesRoute.SPLASH)
+        } else {
+            openAndPopUp(TomatoesRoute.LOGIN, TomatoesRoute.SPLASH)
         }
     }
+
 }

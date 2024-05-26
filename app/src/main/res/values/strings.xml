@@ -29,4 +29,5 @@
     <string name="tf_todo_title">要完成的事項</string>
     <string name="label_tomato_with_unit">" 個番茄"</string>
     <string name="label_how_many_number_of_tomato">預估需要的番茄數</string>
+    <string name="auth_web_client_id" translatable="false">746739265690-dc2i1v8ahp0tdqlcpabn8k7krl0jgmqc.apps.googleusercontent.com</string>
 </resources>

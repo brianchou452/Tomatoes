@@ -25,8 +25,14 @@ android {
     }
 
     buildTypes {
+        debug {
+            manifestPlaceholders["crashlyticsCollectionEnabled"] = "false"
+            manifestPlaceholders["usesCleartextTraffic"] = "true"
+        }
         release {
             isMinifyEnabled = false
+            manifestPlaceholders["crashlyticsCollectionEnabled"] = "true"
+            manifestPlaceholders["usesCleartextTraffic"] = "false"
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -78,6 +84,9 @@ dependencies {
     implementation(libs.androidx.foundation)
     implementation(project(":kalendar"))
     implementation(libs.kotlinx.datetime)
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
     coreLibraryDesugaring(libs.desugar.jdk.libs)
     ksp(libs.hilt.android.compiler)
     implementation(libs.firebase.crashlytics)

@@ -31,6 +31,9 @@ lifecycleRuntimeCompose = "2.7.0"
 desugar_jdk_libs = "2.0.4"
 foundation = "1.6.7"
 kotlinxDatetime = "0.6.0"
+credentials = "1.2.2"
+credentialsPlayServicesAuth = "1.2.2"
+googleid = "1.1.0"
 # https://github.com/firebase/firebase-android-sdk/issues/5925 3.0.0 is not working
 
 [libraries]
@@ -76,6 +79,9 @@ ui = { module = "androidx.compose.ui:ui" }
 ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
 ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+androidx-credentials = { group = "androidx.credentials", name = "credentials", version.ref = "credentials" }
+androidx-credentials-play-services-auth = { group = "androidx.credentials", name = "credentials-play-services-auth", version.ref = "credentialsPlayServicesAuth" }
+googleid = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version.ref = "googleid" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

@@ -5,6 +5,7 @@ import cc.seaotter.tomatoes.data.service.AccountService
 import cc.seaotter.tomatoes.data.service.trace
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -33,6 +34,11 @@ class AccountServiceImpl @Inject constructor(private val auth: FirebaseAuth) : A
         auth.signInWithEmailAndPassword(email, password).await()
     }
 
+    override suspend fun authenticate(withGoogleCredential: String) {
+        val firebaseCredential = GoogleAuthProvider.getCredential(withGoogleCredential, null)
+        auth.signInWithCredential(firebaseCredential).await()
+    }
+
     override suspend fun sendRecoveryEmail(email: String) {
         auth.sendPasswordResetEmail(email).await()
     }
@@ -56,9 +62,6 @@ class AccountServiceImpl @Inject constructor(private val auth: FirebaseAuth) : A
             auth.currentUser!!.delete()
         }
         auth.signOut()
-
-        // Sign the user back in anonymously.
-        createAnonymousAccount()
     }
 
     companion object {

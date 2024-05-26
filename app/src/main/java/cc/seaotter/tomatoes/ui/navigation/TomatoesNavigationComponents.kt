@@ -18,6 +18,7 @@ import cc.seaotter.tomatoes.TomatoesAppState
 import cc.seaotter.tomatoes.ui.achievement.AchievementScreen
 import cc.seaotter.tomatoes.ui.countdown.CountDownScreen
 import cc.seaotter.tomatoes.ui.history.HistoryScreen
+import cc.seaotter.tomatoes.ui.login.LoginScreen
 import cc.seaotter.tomatoes.ui.navigation.TomatoesRoute.TODO_ID
 import cc.seaotter.tomatoes.ui.splash.SplashScreen
 import cc.seaotter.tomatoes.ui.todo.TodoScreen
@@ -65,6 +66,9 @@ fun NavGraphBuilder.tomatoesGraph(appState: TomatoesAppState) {
     composable(TomatoesRoute.SPLASH) {
         SplashScreen(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
     }
+    composable(TomatoesRoute.LOGIN) {
+        LoginScreen(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
+    }
     composable(TomatoesRoute.TODO) {
         TodoScreen(
             navigateToCountDown = { todoID ->
@@ -76,7 +80,9 @@ fun NavGraphBuilder.tomatoesGraph(appState: TomatoesAppState) {
         HistoryScreen()
     }
     composable(TomatoesRoute.ACHIEVEMENT) {
-        AchievementScreen()
+        AchievementScreen(
+            clearAndNavigate = { route -> appState.clearAndNavigate(route) }
+        )
     }
     composable(
         route = "${TomatoesRoute.COUNTDOWN}/{$TODO_ID}",

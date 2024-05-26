@@ -48,4 +48,9 @@ class TomatoesAppState(
         isShowBottomNavigationBar.value = true
     }
 
+    fun clearAndNavigate(route: String) {
+        navActions.clearAndNavigate(route)
+        isShowBottomNavigationBar.value = false
+    }
+
 }

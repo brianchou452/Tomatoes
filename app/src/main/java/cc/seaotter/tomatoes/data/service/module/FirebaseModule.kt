@@ -15,7 +15,9 @@ import dagger.hilt.components.SingletonComponent
 object FirebaseModule {
 
 //    init {
-//        Firebase.firestore.useEmulator("192.168.1.109", 8080)
+//        Firebase.auth.useEmulator("192.168.1.185", 9099)
+//        Firebase.auth.firebaseAuthSettings.setAppVerificationDisabledForTesting(true)
+//        Firebase.firestore.useEmulator("192.168.1.185", 8080)
 //    }
 
     @Provides
