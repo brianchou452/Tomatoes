@@ -22,15 +22,15 @@ class LoginViewModel @Inject constructor(
             } catch (ex: FirebaseAuthException) {
                 throw ex
             }
-            Log.d("SplashViewModel", "createAnonymousAccount: ")
-            openAndPopUp(TomatoesRoute.TODO, TomatoesRoute.SPLASH)
+            Log.d("LoginViewModel", "createAnonymousAccount")
+            openAndPopUp(TomatoesRoute.TODO, TomatoesRoute.LOGIN)
         }
     }
 
     fun signInWithGoogle(credential: String, openAndPopUp: (String, String) -> Unit) {
         launchCatching {
             accountService.authenticate(credential)
-            openAndPopUp(TomatoesRoute.TODO, TomatoesRoute.SPLASH)
+            openAndPopUp(TomatoesRoute.TODO, TomatoesRoute.LOGIN)
         }
     }
 }
