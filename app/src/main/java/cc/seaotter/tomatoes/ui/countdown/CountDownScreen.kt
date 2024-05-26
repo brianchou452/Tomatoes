@@ -30,12 +30,13 @@ import cc.seaotter.tomatoes.ui.common.SecondaryButton
 
 @Composable
 fun CountDownScreen(
+    modifier: Modifier = Modifier,
     popUpCountDown: () -> Unit, viewModel: CountDownViewModel = hiltViewModel()
 ) {
     val timerValue by viewModel.timer.collectAsState()
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(12.dp),
         verticalArrangement = Arrangement.SpaceBetween,

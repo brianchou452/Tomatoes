@@ -5,6 +5,7 @@ import android.content.res.Resources
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
@@ -98,7 +99,12 @@ fun TomatoesApp() {
             AnimatedVisibility(
                 visible = appState.isShowBottomNavigationBar.value,
                 enter = slideInVertically(initialOffsetY = { it }),
-                exit = slideOutVertically(targetOffsetY = { it }),
+                exit = slideOutVertically(
+                    animationSpec = tween(
+                        durationMillis = 100
+                    ),
+                    targetOffsetY = { it },
+                ),
                 content = {
                     TomatoesBottomNavigationBar(
                         selectedDestination = selectedDestination,
