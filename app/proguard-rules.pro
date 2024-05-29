@@ -14,12 +14,16 @@
 
 # Uncomment this to preserve the line number information for
 # debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+-keepattributes SourceFile,LineNumberTable
 
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
-#-renamesourcefileattribute SourceFile
+-renamesourcefileattribute SourceFile
+
 -if class androidx.credentials.CredentialManager
 -keep class androidx.credentials.playservices.** {
   *;
 }
+
+# https://github.com/Kotlin/kotlinx-datetime/pull/394
+-dontwarn kotlinx.serialization.internal.AbstractPolymorphicSerializer
