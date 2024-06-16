@@ -30,4 +30,8 @@
     <string name="label_tomato_with_unit">" 個番茄"</string>
     <string name="label_how_many_number_of_tomato">預估需要的番茄數</string>
     <string name="auth_web_client_id" translatable="false">746739265690-dc2i1v8ahp0tdqlcpabn8k7krl0jgmqc.apps.googleusercontent.com</string>
+    <string name="day">日</string>
+    <string name="week">週</string>
+    <string name="month">月</string>
+    <string name="year">年</string>
 </resources>

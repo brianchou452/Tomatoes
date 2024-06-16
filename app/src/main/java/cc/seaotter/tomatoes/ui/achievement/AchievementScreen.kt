@@ -34,6 +34,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -42,10 +43,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import cc.seaotter.tomatoes.ext.formatTimeWithText
 import cc.seaotter.tomatoes.ui.common.AutoResizedText
 import cc.seaotter.tomatoes.ui.common.snackbar.SnackbarManager
 import cc.seaotter.tomatoes.ui.common.snackbar.SnackbarMessage
@@ -56,15 +59,20 @@ fun AchievementScreen(
     clearAndNavigate: (String) -> Unit,
     viewModel: AchievementViewModel = hiltViewModel()
 ) {
+
     AchievementScreenContent(
-        signOut = { viewModel.signOut(clearAndNavigate) }
+        uiState = viewModel.uiState,
+        signOut = { viewModel.signOut(clearAndNavigate) },
+        loadAchievement = { viewModel.loadAchievement(it) }
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AchievementScreenContent(
+    uiState: MutableState<AchievementUiState>,
     signOut: () -> Unit,
+    loadAchievement: (TimeRange) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(
@@ -97,7 +105,7 @@ private fun AchievementScreenContent(
             Spacer(modifier = Modifier.height(8.dp))
 
             var selectedIndex by remember { mutableIntStateOf(0) }
-            val options = listOf("日", "週", "月", "年")
+            val options = TimeRange.entries.map { it.value }
             SingleChoiceSegmentedButtonRow(
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -107,10 +115,16 @@ private fun AchievementScreenContent(
                             index = index,
                             count = options.size
                         ),
-                        onClick = { selectedIndex = index },
+                        onClick = {
+                            selectedIndex = index
+                            uiState.value = uiState.value.copy(
+                                timeRange = TimeRange.entries[index]
+                            )
+                            loadAchievement(TimeRange.entries[index])
+                        },
                         selected = index == selectedIndex
                     ) {
-                        Text(label)
+                        Text(stringResource(id = label))
                     }
                 }
             }
@@ -120,9 +134,20 @@ private fun AchievementScreenContent(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             )
-            TotalTomatoesCountCard()
-            TimeRangeCategoryCard()
-            TimeRangeTomatoesCard()
+            TotalTomatoesCountCard(
+                totalTomatoes = uiState.value.totalTomatoes,
+                totalFocusDays = uiState.value.totalFocusDays
+            )
+            TimeRangeCategoryCard(
+                timeRange = uiState.value.timeRange,
+                totalFocusTime = uiState.value.totalFocusTime,
+                focusTimeInRange = uiState.value.focusTimeInRange
+            )
+            TimeRangeTomatoesCard(
+                timeRange = uiState.value.timeRange,
+                totalTomatoes = uiState.value.totalTomatoes,
+                tomatoesInRange = uiState.value.tomatoesInRange
+            )
             Spacer(modifier = Modifier.height(8.dp))
         }
 
@@ -130,32 +155,39 @@ private fun AchievementScreenContent(
 }
 
 @Composable
-private fun TotalTomatoesCountCard() {
+private fun TotalTomatoesCountCard(
+    totalTomatoes: Int,
+    totalFocusDays: Int
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
     ) {
         AchievementInfoRow(
             leftTitleText = "累計專注番茄數",
-            leftValueText = "100",
+            leftValueText = totalTomatoes.toString(),
             rightTitleText = "累計專注天數",
-            rightValueText = "100"
+            rightValueText = totalFocusDays.toString()
         )
     }
 }
 
 @Composable
-private fun TimeRangeCategoryCard() {
+private fun TimeRangeCategoryCard(
+    timeRange: TimeRange,
+    totalFocusTime: Long,
+    focusTimeInRange: Long
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
     ) {
         Column {
             AchievementInfoRow(
-                leftTitleText = "今日專注",
-                leftValueText = "12h45m",
+                leftTitleText = "本" + stringResource(id = timeRange.value) + "專注",
+                leftValueText = focusTimeInRange.formatTimeWithText(),
                 rightTitleText = "累計專注時長",
-                rightValueText = "312h42m"
+                rightValueText = totalFocusTime.formatTimeWithText()
             )
 
             // TODO: 加入類別時間的長條圖
@@ -164,16 +196,20 @@ private fun TimeRangeCategoryCard() {
 }
 
 @Composable
-private fun TimeRangeTomatoesCard() {
+private fun TimeRangeTomatoesCard(
+    timeRange: TimeRange,
+    totalTomatoes: Int,
+    tomatoesInRange: Int
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
     ) {
         AchievementInfoRow(
-            leftTitleText = "本日專注番茄數",
-            leftValueText = "0",
+            leftTitleText = "本" + stringResource(id = timeRange.value) + "專注番茄數",
+            leftValueText = tomatoesInRange.toString(),
             rightTitleText = "累計專注番茄數",
-            rightValueText = "0"
+            rightValueText = totalTomatoes.toString()
         )
     }
 }
@@ -300,7 +336,15 @@ private fun AppBarMenu(
 @Preview
 @Composable
 fun PreviewAchievementScreen() {
-    AchievementScreenContent(signOut = {})
+    AchievementScreenContent(
+        uiState = remember {
+            mutableStateOf(
+                AchievementUiState()
+            )
+        },
+        signOut = {},
+        loadAchievement = {}
+    )
 }
 
 @Preview

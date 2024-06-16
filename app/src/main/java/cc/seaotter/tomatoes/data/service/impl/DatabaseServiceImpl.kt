@@ -6,6 +6,8 @@ import cc.seaotter.tomatoes.data.TodoHistory
 import cc.seaotter.tomatoes.data.service.AccountService
 import cc.seaotter.tomatoes.data.service.DatabaseService
 import cc.seaotter.tomatoes.data.service.trace
+import cc.seaotter.tomatoes.ext.toDate
+import com.google.firebase.firestore.AggregateSource
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.dataObjects
@@ -17,9 +19,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.tasks.await
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.toJavaLocalDate
 import java.time.ZoneId
-import java.util.Date
 import javax.inject.Inject
 
 
@@ -72,10 +72,8 @@ class DatabaseServiceImpl @Inject constructor(
         start: LocalDate,
         end: LocalDate
     ): Flow<List<TodoHistory>> {
-        val startDate =
-            Date.from(start.toJavaLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant())
-        val endDate =
-            Date.from(end.toJavaLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant())
+        val startDate = start.toDate()
+        val endDate = end.toDate()
         trace(GET_HISTORIES_TRACE) {
             val historyMap: MutableMap<String, TodoHistory> = mutableMapOf()
             val list = MutableStateFlow<List<TodoHistory>>(emptyList())
@@ -109,6 +107,40 @@ class DatabaseServiceImpl @Inject constructor(
         }
     }
 
+    override suspend fun getTotalTomatoes(): Int {
+        trace(GET_TOTAL_TOMATOES_TRACE) {
+            return historyCollection
+                .count()
+                .get(AggregateSource.SERVER)
+                .await()
+                .count
+                .toInt()
+        }
+    }
+
+    override suspend fun getTotalTomatoes(start: LocalDate, end: LocalDate): Int {
+        val startDate = start.toDate()
+        val endDate = end.toDate()
+        trace(GET_TOTAL_TOMATOES_TRACE) {
+            return historyCollection
+                .whereGreaterThanOrEqualTo(FINISHED_AT_FIELD, startDate)
+//                .whereLessThanOrEqualTo(FINISHED_AT_FIELD, endDate)
+                .count()
+                .get(AggregateSource.SERVER)
+                .await()
+                .count
+                .toInt()
+        }
+    }
+
+    override suspend fun getTotalFocusDays(start: LocalDate, end: LocalDate): Flow<Int> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getTotalFocusTime(start: LocalDate, end: LocalDate): Flow<Int> {
+        TODO("Not yet implemented")
+    }
+
     companion object {
         private const val USER_ID_FIELD = "userId"
         private const val CREATED_AT_FIELD = "createdAt"
@@ -119,5 +151,6 @@ class DatabaseServiceImpl @Inject constructor(
         private const val UPDATE_TODO_TRACE = "updateTodo"
         private const val SAVE_HISTORY_TRACE = "saveHistory"
         private const val GET_HISTORIES_TRACE = "getHistories"
+        private const val GET_TOTAL_TOMATOES_TRACE = "getTotalTomatoes"
     }
 }

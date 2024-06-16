@@ -17,5 +17,13 @@ fun Long.formatTimeWithText(): String {
     if (this < 0) {
         return "0 分"
     }
-    return String.format(Locale.getDefault(), "%d 分", this / 1000 / 60)
+    val totalSeconds = this / 1000
+    val minutes = totalSeconds / 60
+    if (minutes < 60) {
+        return String.format(Locale.getDefault(), "%d 分", minutes)
+    } else {
+        val hours = minutes / 60
+        val remainingMinutes = minutes % 60
+        return String.format(Locale.getDefault(), "%d 時 %d 分", hours, remainingMinutes)
+    }
 }
