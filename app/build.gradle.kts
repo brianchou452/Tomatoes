@@ -15,8 +15,8 @@ android {
         applicationId = "cc.seaotter.tomatoes"
         minSdk = 26
         targetSdk = 34
-        versionCode = 7
-        versionName = "0.3.0"
+        versionCode = 8
+        versionName = "0.3.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -94,6 +94,7 @@ dependencies {
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.googleid)
+    implementation(libs.androidx.core.splashscreen)
     coreLibraryDesugaring(libs.desugar.jdk.libs)
     ksp(libs.hilt.android.compiler)
     implementation(libs.firebase.crashlytics)

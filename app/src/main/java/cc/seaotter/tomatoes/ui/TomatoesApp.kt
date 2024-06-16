@@ -54,7 +54,9 @@ import kotlinx.coroutines.CoroutineScope
 
 
 @Composable
-fun TomatoesApp() {
+fun TomatoesApp(
+    startingDestination: String
+) {
     val navController = rememberNavController()
     val navigationActions = remember(navController) {
         TomatoesNavigationActions(navController)
@@ -79,7 +81,6 @@ fun TomatoesApp() {
         }
 
         TomatoesRoute.LOGIN,
-        TomatoesRoute.SPLASH,
         "${TomatoesRoute.COUNTDOWN}/{${TomatoesRoute.TODO_ID}}" -> {
             appState.isShowBottomNavigationBar.value = false
         }
@@ -125,7 +126,8 @@ fun TomatoesApp() {
         ) {
             TomatoesAppContent(
                 navController = navController,
-                appState = appState
+                appState = appState,
+                startingDestination = startingDestination
             )
         }
     }
@@ -137,7 +139,8 @@ fun TomatoesApp() {
 fun TomatoesAppContent(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    appState: TomatoesAppState
+    appState: TomatoesAppState,
+    startingDestination: String
 ) {
     Row(modifier = modifier.fillMaxSize()) {
 
@@ -149,7 +152,8 @@ fun TomatoesAppContent(
             TomatoesNavHost(
                 navController = navController,
                 modifier = Modifier.weight(1f),
-                appState = appState
+                appState = appState,
+                startingDestination = startingDestination
             )
         }
     }

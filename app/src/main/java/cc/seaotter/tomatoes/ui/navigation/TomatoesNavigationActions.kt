@@ -10,7 +10,6 @@ import androidx.navigation.NavHostController
 import cc.seaotter.tomatoes.R
 
 object TomatoesRoute {
-    const val SPLASH = "SplashScreen"
     const val LOGIN = "LoginScreen"
     const val TODO = "Todo"
     const val COUNTDOWN = "CountDown"

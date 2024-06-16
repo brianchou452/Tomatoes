@@ -29,7 +29,6 @@ import cc.seaotter.tomatoes.ui.countdown.CountDownScreen
 import cc.seaotter.tomatoes.ui.history.HistoryScreen
 import cc.seaotter.tomatoes.ui.login.LoginScreen
 import cc.seaotter.tomatoes.ui.navigation.TomatoesRoute.TODO_ID
-import cc.seaotter.tomatoes.ui.splash.SplashScreen
 import cc.seaotter.tomatoes.ui.todo.TodoScreen
 
 
@@ -60,21 +59,19 @@ fun TomatoesBottomNavigationBar(
 fun TomatoesNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    appState: TomatoesAppState
+    appState: TomatoesAppState,
+    startingDestination: String
 ) {
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = TomatoesRoute.SPLASH,
+        startDestination = startingDestination,
     ) {
         tomatoesGraph(appState.navActions)
     }
 }
 
 fun NavGraphBuilder.tomatoesGraph(navAction: TomatoesNavigationActions) {
-    composable(TomatoesRoute.SPLASH) {
-        SplashScreen(openAndPopUp = { route, popUp -> navAction.navigateAndPopUp(route, popUp) })
-    }
     composable(
         route = TomatoesRoute.LOGIN,
         enterTransition = {
