@@ -5,17 +5,18 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'com.vanniktech.maven.publish' version "0.25.2"
     id 'org.jetbrains.dokka'
+    alias(libs.plugins.compose.compiler)
 }
 
 apply from: 'quality/static-check.gradle'
 
 android {
     namespace 'com.himanshoe.kalendar'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         minSdk 24
-        targetSdk 34
+        targetSdk 35
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"

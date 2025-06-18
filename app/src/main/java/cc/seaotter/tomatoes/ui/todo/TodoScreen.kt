@@ -2,7 +2,6 @@ package cc.seaotter.tomatoes.ui.todo
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imeAnimationSource
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
@@ -58,7 +56,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TodoScreen(
     navigateToCountDown: (String) -> Unit, viewModel: TodoViewModel = hiltViewModel()
@@ -113,7 +111,6 @@ fun TodoScreen(
                     showBottomSheet = false
                 },
                 sheetState = sheetState,
-                windowInsets = WindowInsets.imeAnimationSource,
                 modifier = Modifier.imePadding()
             ) {
                 AddTodoForm(

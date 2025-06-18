@@ -13,6 +13,7 @@ plugins {
     alias(libs.plugins.hiltAndroid) apply false
     alias(libs.plugins.firebaseCrashlytics) apply false
     id("org.jetbrains.dokka") version "1.9.20"
+    alias(libs.plugins.compose.compiler) apply false
 }
 
 subprojects {
